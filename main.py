@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from flask import Flask, request, render_template, flash, redirect, url_for
+from flask import Flask, request, render_template, redirect
 import os
 import app
 import urllib.request
@@ -124,7 +124,7 @@ def make():
     for i in range(len(tag)):
         trans.append(get_translate(tag[i]))
 
-    flash("이미지해시태그는 다음과 같습니다:", set(trans))
+    #flash("이미지해시태그는 다음과 같습니다:", set(trans))
 
     imagehashtag = set(trans)
 
@@ -141,7 +141,7 @@ def make():
     tokenizer.decode(summary_ids.squeeze().tolist(), skip_special_tokens=True)
 
     textresult = tokenizer.decode(summary_ids.squeeze().tolist(), skip_special_tokens=True)
-    flash(textresult)
+    #flash(textresult)
 
     kkma = Kkma()
 
@@ -149,12 +149,9 @@ def make():
 
     texthashtag = list(filter(biggerthanlen2, kkma_nouns))
 
-    outputlist = set(trans + texthashtag)
+    outputlist = list(trans + texthashtag)
 
-    flash("텍스트해시태그는 다음과 같습니다:", set(texthashtag).decode('utf8'))
-
-    flash("최종 추천태그는 다음과 같습니다 :", outputlist)
-    return render_template("Home.html")
+    return render_template("Home.html", outputlist = outputlist)
 
 
 @app.route("/Contact")
